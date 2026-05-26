@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react' // Corrigido aqui
+import react from '@vitejs/plugin-react' // ou vue, etc
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/gerenciador-tarefas/', // Certifique-se de que este é o nome exato do seu repositório
+  base: "/gerenciador-tarefas/", // ADICIONE ESSA LINHA com o nome do seu repositório
 })
