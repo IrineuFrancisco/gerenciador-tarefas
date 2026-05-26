@@ -24,6 +24,10 @@ interface TaskBoardProps {
 export default function TaskBoard({ tasks, setTasks }: TaskBoardProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  const handleDeleteTask = (taskId: string) => {
+    setTasks((prev) => prev.filter((t) => t.id !== taskId));
+  };
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -119,9 +123,9 @@ export default function TaskBoard({ tasks, setTasks }: TaskBoardProps) {
       onDragEnd={handleDragEnd}
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <TaskColumn id="todo" title="A Fazer" tasks={tasks.filter((t) => t.status === 'todo')} />
-        <TaskColumn id="in-progress" title="Em Progresso" tasks={tasks.filter((t) => t.status === 'in-progress')} />
-        <TaskColumn id="done" title="Concluído" tasks={tasks.filter((t) => t.status === 'done')} />
+        <TaskColumn id="todo" title="A Fazer" tasks={tasks.filter((t) => t.status === 'todo')} onDeleteTask={handleDeleteTask} />
+        <TaskColumn id="in-progress" title="Em Progresso" tasks={tasks.filter((t) => t.status === 'in-progress')} onDeleteTask={handleDeleteTask} />
+        <TaskColumn id="done" title="Concluído" tasks={tasks.filter((t) => t.status === 'done')} onDeleteTask={handleDeleteTask} />
       </div>
 
       <DragOverlay>

@@ -1,6 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Clock, GripVertical } from 'lucide-react';
+import { Clock, GripVertical, Trash2 } from 'lucide-react';
 import type { Task } from '../types';
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -8,9 +8,10 @@ import { ptBR } from 'date-fns/locale';
 interface TaskCardProps {
   task: Task;
   isOverlay?: boolean;
+  onDeleteTask?: (id: string) => void;
 }
 
-export default function TaskCard({ task, isOverlay }: TaskCardProps) {
+export default function TaskCard({ task, isOverlay, onDeleteTask }: TaskCardProps) {
   const {
     setNodeRef,
     attributes,
@@ -72,13 +73,28 @@ export default function TaskCard({ task, isOverlay }: TaskCardProps) {
           </span>
           <h3 className="font-semibold text-slate-100 mt-1">{task.title}</h3>
         </div>
-        <button
-          className="text-slate-500 hover:text-slate-300 transition-colors cursor-grab active:cursor-grabbing p-1"
-          {...attributes}
-          {...listeners}
-        >
-          <GripVertical size={20} />
-        </button>
+        <div className="flex items-center gap-1">
+          {onDeleteTask && (
+            <button
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteTask(task.id);
+              }}
+              className="text-slate-500 hover:text-rose-400 transition-colors p-1"
+              title="Excluir tarefa"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
+          <button
+            className="text-slate-500 hover:text-slate-300 transition-colors cursor-grab active:cursor-grabbing p-1"
+            {...attributes}
+            {...listeners}
+          >
+            <GripVertical size={20} />
+          </button>
+        </div>
       </div>
 
       <p className="text-sm text-slate-400 line-clamp-2">
